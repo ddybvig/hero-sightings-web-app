@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <!-- Bootstrap CSS -->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+                    <title>Hero Sightings</title>
+                    </head>
+                    <body>
+                        <!-- Main Body of Page -->
+                        <div class="container">
+                            <div class="row m-4">
+                                <div class="col text-center border border-dark">
+                                    <h1><a href="/" class="text-dark">HeroTracker</a></h1>
+                                </div>
+                            </div>
+                            <div class="row m-4 border border-dark">
+                                <div class="col text-center m-3">
+                                    <a href="heroes" class="btn btn-outline-primary btn-lg">Heroes</a>
+                                </div>
+                                <div class="col text-center m-3">
+                                    <a href="locations" class="btn btn-outline-primary btn-lg">Locations</a>
+                                </div>
+                                <div class="col text-center m-3">
+                                    <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
+                                </div>
+                                <div class="col text-center m-3">
+                                    <a href="organizations" class="btn btn-outline-primary btn-lg">Organizations</a>
+                                </div>
+                            </div>
+                            <div class="row m-4 border border-dark">
+                                <div class="col-3 text-center m-3">
+                                    <span class="h3">Add Hero</span>
+                                </div>
+                                <div class="col-7 text-center m-3">
+                                    <form action="addHero" method="POST">
+                                        <div class="form-group row">
+                                            <label for="name" class="col-3 col-form-label">
+                                                Name</label>
+                                            <div class="col-9">
+                                                <input type="text" name="name" 
+                                                       id="name" class="form-control" th:value="${hero.name}"/>
+                                                <div th:if="${#fields.hasErrors('hero.name')}">
+                                                    <p th:each="error : ${#fields.errors('hero.name')}" class="alert alert-danger"
+                                                       th:text="${error}"> Bad name </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="description" class="col-3 col-form-label">
+                                                Description</label>
+                                            <div class="col-9">
+                                                <input type="text" name="description" 
+                                                       id="description" class="form-control" th:value="${hero.description}"/>
+                                                <div th:if="${#fields.hasErrors('hero.description')}">
+                                                    <p th:each="error : ${#fields.errors('hero.description')}" class="alert alert-danger"
+                                                       th:text="${error}"> Bad description </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="superpowers" class="col-3 col-form-label">
+                                                Superpowers</label>
+                                            <div class="col-9">
+                                                <input type="text" name="superpowers" 
+                                                       id="superpowers" class="form-control" th:value="${hero.superpowers}"/>
+                                                <div th:if="${#fields.hasErrors('hero.superpowers')}">
+                                                    <p th:each="error : ${#fields.errors('hero.superpowers')}" class="alert alert-danger"
+                                                       th:text="${error}"> Bad description </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="sightings" class="col-3 col-form-label">
+                                                Sightings</label>
+                                            <div class="col-9">
+                                                <select multiple id="sightings" name="sightingId" 
+                                                        class="form-control" >
+                                                    <option th:each="sighting : ${sightings}" 
+                                                            th:value="${sighting.id}" 
+                                                            th:text="${sighting.name + ' ' 
+                                                            + sighting.dateOfSighting}"> <!--add location stuff?-->
+                                                        Sighting</option>
+                                                </select>
+                                                <div th:if="${#fields.hasErrors('hero.sightings')}">
+                                                    <p th:each="error : ${#fields.errors('hero.sightings')}" 
+                                                       class="alert alert-danger" th:text="${error}"> 
+                                                        Bad sightings </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="organizations" class="col-3 col-form-label">
+                                                Organizations</label>
+                                            <div class="col-9">
+                                                <select multiple id="organizations" name="organizationId" 
+                                                        class="form-control" >
+                                                    <option th:each="organization : ${organizations}" 
+                                                            th:value="${organization.id}" 
+                                                            th:text="${organization.name}">
+                                                        Organizations</option>
+                                                </select>
+                                                <div th:if="${#fields.hasErrors('hero.organizations')}">
+                                                    <p th:each="error : ${#fields.errors('hero.organizations')}" 
+                                                       class="alert alert-danger" th:text="${error}"> 
+                                                        Bad orgs </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Add Hero</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="row m-4 border border-dark">
+                                <div class="col text-center m-3">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Superpowers</th>
+                                                <th>Sightings</th>
+                                                <th>Organizations</th>
+                                                <th>Details</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="hero : ${heroes}">
+                                                <td th:text="${hero.id}">hero ID</td>
+                                                <td th:text='${hero.name}'>hero Name</td>
+                                                <td th:text='${hero.description}'>hero desc</td>
+                                                <td th:text='${hero.superpowers}'>hero superpowers</td>
+                                                <td> <span th:each="sighting : ${hero.sightings}">
+                                                        <ul><li><span th:text="${sighting.name + ' ' + sighting.dateOfSighting}">Sightings</span></li></ul></br>
+                                                    </span>
+                                                </td>
+                                                <td> <span th:each="organization : ${hero.organizations}">
+                                                        <ul><li><span th:text="${organization.name}">Orgs</span></li></ul></br>
+                                                    </span>
+                                                </td>
+                                                <td><a href="#" th:href="@{/heroDetail(id=${hero.id})}">Details</a></td>
+                                                <td><a href="#" th:href="@{/editHero(id=${hero.id})}">Edit</a></td>
+                                                <td><a href="#" th:href="@{/deleteHero(id=${hero.id})}">Delete</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <!-- End main body -->
+
+                        <!-- Optional JavaScript -->
+                        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+                    </body>
+                    </html>
